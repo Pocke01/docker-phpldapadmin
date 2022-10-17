@@ -1,0 +1,29 @@
+server {
+  listen ${NGINX_SERVER_PORT} default_server;
+  listen [::]:${NGINX_SERVER_PORT} default_server;
+  root ${PHP_LDAP_ROOT}/htdocs;
+
+  # Add index.php to setup Nginx, PHP & PHP-FPM config
+  index index.php;
+
+  server_name ${NGINX_SERVER_NAME};
+
+  location / {
+    try_files $uri $uri/ =404;
+  }
+
+  # pass PHP scripts on Nginx to FastCGI (PHP-FPM) server
+  location ~ \.php$ {
+    include snippets/fastcgi-php.conf;
+
+    # Nginx php-fpm sock config:
+    fastcgi_pass unix:/run/php/pla-fpm.sock;
+  }
+
+  # deny access to Apache .htaccess on Nginx with PHP, 
+  # if Apache and Nginx document roots concur
+  location ~ /\.ht {
+    deny all;
+  }
+}
+
