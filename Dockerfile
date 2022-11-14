@@ -1,4 +1,4 @@
-FROM jar349/nginx-unprivileged
+FROM nginxinc/nginx-unprivileged
 LABEL maintainer="John Ruiz <jruiz@johnruiz.com>"
 
 # these arguments can be passed to 'docker build'
@@ -9,7 +9,7 @@ USER root
 
 RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get update -qq && \
-    apt-get install -y -qq unzip curl php7.4-fpm php7.4-ldap > /dev/null && \
+    apt-get install -y -qq unzip curl php7.4-fpm php7.4-ldap php7.4-xml > /dev/null && \
     php -v && \
     mkdir /srv/docker-phpLDAPadmin && \
     mkdir /run/php && \
